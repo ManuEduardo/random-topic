@@ -26,13 +26,15 @@ func main() {
 
 	urlDb := fmt.Sprintf("postgres://%v:%v@localhost:5432/%v", dbUser, dbPass, dbName)
 
-	err = infraestructure.InitDB(urlDb)
+	dbInstance := infraestructure.New(urlDb)
+
+	err = dbInstance.InitDB()
 	if err != nil {
 		return
 	}
-	defer infraestructure.CloseDB()
+	defer dbInstance.CloseDB()
 
-	repository := repository.New(infraestructure.GetDBPool())
+	repository := repository.New(dbInstance)
 	services := services.New(repository)
 	handlers := handlers.New(services)
 
@@ -41,18 +43,11 @@ func main() {
 	router.HandleFunc("GET /topic/create", handlers.HandleTopicCreate)
 	router.HandleFunc("GET /user/{id}", handlers.HandleGetUser)
 	router.HandleFunc("POST /user", handlers.HandlePostUser)
+	router.HandleFunc("POST /card", handlers.HandlePostCard)
+	router.HandleFunc("GET /random-card/{id}", handlers.GetRandomCard)
 	router.HandleFunc("GET /", handlers.HandleBase)
 
 	log.Printf("Listening on %v\n", fmt.Sprintf("localhost:%v", portServer))
 	err = http.ListenAndServe(fmt.Sprintf(":%v", portServer), router)
 	log.Fatalln(err.Error())
 }
-
-// func initStorage(db *sql.DB) {
-// 	err := db.Ping()
-// 	if err != nil {
-// 		log.Fatal(err)
-// 	}
-
-// 	fmt.Println("Connected to Database!")
-// }

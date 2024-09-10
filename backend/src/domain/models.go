@@ -24,3 +24,19 @@ type Card struct {
 	TypeID    int64    `json:"type_id"`    // ID del tipo de tarjeta (FK a CardType)
 	Type      CardType `json:"type"`       // Relación con el tipo de tarjeta
 }
+
+type GenderUser int
+
+const (
+	Male   GenderUser = iota + 1
+	Female GenderUser = iota
+	Other  GenderUser = iota
+)
+
+func (g GenderUser) String() string {
+	return [...]string{"Male", "Female", "Other"}[g-1]
+}
+
+func (g GenderUser) EnumIndex() int {
+	return int(g)
+}

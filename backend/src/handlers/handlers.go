@@ -29,8 +29,8 @@ func (handler *Handler) HandleTopicCreate(w http.ResponseWriter, r *http.Request
 
 func (handler *Handler) HandleGetUser(w http.ResponseWriter, r *http.Request) {
 	log.Println("Using Get User Handler")
-	id := r.PathValue("id")
-	response, err := handler._services.GetUserById(id)
+	id_user := r.PathValue("id")
+	response, err := handler._services.GetUserById(id_user)
 	if err != nil {
 		log.Panicln("Error getting user")
 		return
@@ -63,5 +63,44 @@ func (handler *Handler) HandlePostUser(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	if err != json.NewEncoder(w).Encode(user) {
 		log.Panicln("Error parsing user")
+	}
+}
+
+func (handler *Handler) GetRandomCard(w http.ResponseWriter, r *http.Request) {
+	log.Println("Using Get Random Card Handler")
+	id_user := r.PathValue("id")
+	response, err := handler._services.GetRandomCard(id_user)
+	if err != nil {
+		log.Panicln("Error getting Random Card")
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	if err != json.NewEncoder(w).Encode(response) {
+		log.Panicln("Error parsing random card response")
+	}
+}
+
+func (handler *Handler) HandlePostCard(w http.ResponseWriter, r *http.Request) {
+	log.Println("Using Register Card Handler")
+	var card domain.Card
+	decoder := json.NewDecoder(r.Body)
+	err := decoder.Decode(&card)
+	if err != nil {
+		log.Panicln("Invalid JSON")
+		http.Error(w, "Invalid JSON", http.StatusBadRequest)
+		return
+	}
+
+	err = handler._services.PostCard(card)
+	if err != nil {
+		log.Panicln("Error creating card")
+		http.Error(w, "Error creating card", http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	if err != json.NewEncoder(w).Encode(card) {
+		log.Panicln("Error parsing card")
 	}
 }
