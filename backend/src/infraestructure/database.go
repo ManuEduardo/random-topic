@@ -19,7 +19,6 @@ type dbPostgres struct {
 }
 
 func New(dbURL string) *dbPostgres {
-	log.Println("INSTANCIA DE LA BASE DE DATOS")
 	return &dbPostgres{dbUrl: dbURL}
 }
 
