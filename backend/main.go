@@ -11,6 +11,7 @@ import (
 	"github.com/ManuEduardo/random-topic/src/repository"
 	"github.com/ManuEduardo/random-topic/src/services"
 	"github.com/joho/godotenv"
+	"github.com/rs/cors"
 )
 
 func main() {
@@ -47,7 +48,14 @@ func main() {
 	router.HandleFunc("GET /random-card/{id}", handlers.GetRandomCard)
 	router.HandleFunc("GET /", handlers.HandleBase)
 
+	corsHandler := cors.New(cors.Options{
+		AllowedOrigins:   []string{"http://localhost:5173", "https://your-frontend-domain.com"},
+		AllowCredentials: true,
+		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE"},
+		AllowedHeaders:   []string{"Content-Type", "Authorization"},
+	})
+
 	log.Printf("Listening on %v\n", fmt.Sprintf("localhost:%v", portServer))
-	err = http.ListenAndServe(fmt.Sprintf(":%v", portServer), router)
+	err = http.ListenAndServe(fmt.Sprintf(":%v", portServer), corsHandler.Handler(router))
 	log.Fatalln(err.Error())
 }
