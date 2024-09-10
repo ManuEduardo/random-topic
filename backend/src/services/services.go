@@ -10,6 +10,7 @@ import (
 
 type IServices interface {
 	GetUserById(id string) (domain.User, error)
+	PostUser(user domain.User) error
 }
 
 type Services struct {
@@ -37,4 +38,15 @@ func (serv *Services) GetUserById(id string) (domain.User, error) {
 	}
 
 	return reponseUser, nil
+}
+
+func (serv *Services) PostUser(user domain.User) error {
+	err := serv._repo.PostUser(user)
+
+	if err != nil {
+		log.Println("Error creating user")
+		return err
+	}
+
+	return nil
 }

@@ -40,6 +40,7 @@ func main() {
 
 	router.HandleFunc("GET /topic/create", handlers.HandleTopicCreate)
 	router.HandleFunc("GET /user/{id}", handlers.HandleGetUser)
+	router.HandleFunc("POST /user", handlers.HandlePostUser)
 	router.HandleFunc("GET /", handlers.HandleBase)
 
 	log.Printf("Listening on %v\n", fmt.Sprintf("localhost:%v", portServer))
