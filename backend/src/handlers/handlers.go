@@ -31,26 +31,25 @@ func (handler *Handler) HandleTopicCreate(w http.ResponseWriter, r *http.Request
 	w.Write([]byte("Not implemented"))
 }
 
-func (handler *Handler) HandleGetUser(w http.ResponseWriter, r *http.Request) {
-	log.Println("Using Get User Handler")
-	id_user := r.PathValue("id")
-	response, err := handler._services.GetUserById(id_user)
+// func (handler *Handler) HandleGetUser(w http.ResponseWriter, r *http.Request) {
+// 	log.Println("Using Get User Handler")
+// 	id_user := r.PathValue("id")
+// 	response, err := handler._services.GetUserById(id_user)
 
-	if err != nil {
-		log.Println("Error getting user")
-		http.Error(w, "User not found", http.StatusNotFound)
-		return
-	}
+// 	if err != nil {
+// 		log.Println("Error getting user")
+// 		http.Error(w, "User not found", http.StatusNotFound)
+// 		return
+// 	}
 
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusOK) // 200 OK
-	if err != json.NewEncoder(w).Encode(response) {
-		log.Println("Error parsing user")
-		http.Error(w, "Error encoding user data", http.StatusInternalServerError)
-	}
-}
-
-func (handler *Handler) HandlePostUser(w http.ResponseWriter, r *http.Request) {
+//		w.Header().Set("Content-Type", "application/json")
+//		w.WriteHeader(http.StatusOK) // 200 OK
+//		if err != json.NewEncoder(w).Encode(response) {
+//			log.Println("Error parsing user")
+//			http.Error(w, "Error encoding user data", http.StatusInternalServerError)
+//		}
+//	}
+func (handler *Handler) HandlePostUserr(w http.ResponseWriter, r *http.Request) {
 	log.Println("Using Register User Handler")
 	var user domain.User
 	decoder := json.NewDecoder(r.Body)
@@ -76,48 +75,48 @@ func (handler *Handler) HandlePostUser(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func (handler *Handler) GetRandomCard(w http.ResponseWriter, r *http.Request) {
-	log.Println("Using Get Random Card Handler")
-	id_user := r.PathValue("id")
-	response, err := handler._services.GetRandomCard(id_user)
+// func (handler *Handler) GetRandomCard(w http.ResponseWriter, r *http.Request) {
+// 	log.Println("Using Get Random Card Handler")
+// 	id_user := r.PathValue("id")
+// 	response, err := handler._services.GetRandomCard(id_user)
 
-	if err != nil {
-		log.Println("Error getting Random Card")
-		http.Error(w, "Random card not found", http.StatusNotFound)
-		return
-	}
+// 	if err != nil {
+// 		log.Println("Error getting Random Card")
+// 		http.Error(w, "Random card not found", http.StatusNotFound)
+// 		return
+// 	}
 
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusOK) // 200 OK
-	if err != json.NewEncoder(w).Encode(response) {
-		log.Println("Error parsing random card response")
-		http.Error(w, "Error encoding card data", http.StatusInternalServerError)
-	}
-}
+//		w.Header().Set("Content-Type", "application/json")
+//		w.WriteHeader(http.StatusOK) // 200 OK
+//		if err != json.NewEncoder(w).Encode(response) {
+//			log.Println("Error parsing random card response")
+//			http.Error(w, "Error encoding card data", http.StatusInternalServerError)
+//		}
+//	}
 
-func (handler *Handler) HandlePostCard(w http.ResponseWriter, r *http.Request) {
-	log.Println("Using Registe Card Handler")
-	var card domain.Card
-	decoder := json.NewDecoder(r.Body)
-	err := decoder.Decode(&card)
+// func (handler *Handler) HandlePostCard(w http.ResponseWriter, r *http.Request) {
+// 	log.Println("Using Registe Card Handler")
+// 	var card domain.Card
+// 	decoder := json.NewDecoder(r.Body)
+// 	err := decoder.Decode(&card)
 
-	if err != nil {
-		log.Println("Invalid JSON")
-		http.Error(w, "Invalid JSON", http.StatusBadRequest)
-		return
-	}
+// 	if err != nil {
+// 		log.Println("Invalid JSON")
+// 		http.Error(w, "Invalid JSON", http.StatusBadRequest)
+// 		return
+// 	}
 
-	err = handler._services.PostCard(card)
-	if err != nil {
-		log.Println("Error creating card")
-		http.Error(w, "Error creating card", http.StatusInternalServerError)
-		return
-	}
+// 	err = handler._services.PostCard(card)
+// 	if err != nil {
+// 		log.Println("Error creating card")
+// 		http.Error(w, "Error creating card", http.StatusInternalServerError)
+// 		return
+// 	}
 
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusCreated)
-	if err != json.NewEncoder(w).Encode(card) {
-		log.Println("Error parsing card")
-		http.Error(w, "Error encoding card data", http.StatusInternalServerError)
-	}
-}
+// 	w.Header().Set("Content-Type", "application/json")
+// 	w.WriteHeader(http.StatusCreated)
+// 	if err != json.NewEncoder(w).Encode(card) {
+// 		log.Println("Error parsing card")
+// 		http.Error(w, "Error encoding card data", http.StatusInternalServerError)
+// 	}
+// }

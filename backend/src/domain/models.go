@@ -40,3 +40,4 @@ func (g GenderUser) String() string {
 func (g GenderUser) EnumIndex() int {
 	return int(g)
 }
+
