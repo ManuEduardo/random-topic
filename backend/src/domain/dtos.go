@@ -5,17 +5,17 @@ import "encoding/xml"
 type SOAPEnvelope struct {
 	XMLName xml.Name `xml:"Envelope"`
 	SOAPNS  string   `xml:"xmlns:soap,attr"`
-	Body    SOAPBody `xml:"soap:Body"`
+	Body    SOAPBody `xml:"Body"`
 }
 
 type SOAPBody struct {
 	GetUserRequest        *GetUserRequest        `xml:",omitempty"`
 	GetUserResponse       *GetUserResponse       `xml:",omitempty"`
-	CreateUserRequest     *CreateUserRequest     `xml:",omitempty"`
+	CreateUser            *CreateUser            `xml:",omitempty"`
 	CreateUserResponse    *CreateUserResponse    `xml:",omitempty"`
 	CreateCardRequest     *CreateCardRequest     `xml:",omitempty"`
 	CreateCardResponse    *CreateCardResponse    `xml:",omitempty"`
-	GetRandomCardRequest  *GetRandomCardRequest  `xml:",omitempty"` // Asegúrate de que este campo esté presente
+	GetRandomCard         *GetRandomCard         `xml:",omitempty"`
 	GetRandomCardResponse *GetRandomCardResponse `xml:",omitempty"`
 }
 
@@ -29,7 +29,7 @@ type GetUserResponse struct {
 	User    User     `xml:"User"`
 }
 
-type CreateUserRequest struct {
+type CreateUser struct {
 	XMLName xml.Name `xml:"CreateUser"`
 	User    User     `xml:"User"`
 }
@@ -51,6 +51,11 @@ type CreateCardResponse struct {
 
 type GetRandomCardRequest struct {
 	XMLName xml.Name `xml:"GetRandomCard"` // Asegúrate de que coincida exactamente
+	UserID  int64    `xml:"UserID"`
+}
+
+type GetRandomCard struct {
+	XMLName xml.Name `xml:"GetRandomCard"`
 	UserID  int64    `xml:"UserID"`
 }
 

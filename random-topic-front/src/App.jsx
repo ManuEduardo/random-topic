@@ -4,27 +4,50 @@ function App() {
   const URL_API = "http://localhost:8080";
 
   const [data, setData] = useState(null);
-  const [idUser, setIdUSer] = useState(1);
+  const [idUser, setIdUser] = useState(1);
   const [isOpenCard, setIsOpenCard] = useState(false);
   const [isOpenModalCard, setIsOpenModalCard] = useState(false);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [typeCard, setTypeCard] = useState("");
-
+  
   const getRandomCard = async (idUser) => {
     try {
-      const url = `${URL_API}/random-card/${idUser}`;
-      const response = await fetch(url);
+      const url = `${URL_API}/soap`;
+      const soapRequest = `
+        <?xml version="1.0" encoding="utf-8"?>
+        <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+          <soap:Body>
+            <soap:GetRandomCard>
+              <UserID>${idUser}</UserID>
+            </soap:GetRandomCard>
+          </soap:Body>
+        </soap:Envelope>
+      `;
+  
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'text/xml; charset=utf-8',
+        },
+        body: soapRequest,
+      });
+  
       if (!response.ok) throw new Error("Error fetching data");
-
-      const dataResponse = await response.json();
-      console.log(dataResponse);
-      setData(dataResponse);
-
-      if (dataResponse) {
-        setTitle(dataResponse.title);
-        setContent(dataResponse.content);
-        setTypeCard(dataResponse.type.name);
+  
+      const dataResponse = await response.text();
+      const parser = new DOMParser();
+      const xmlDoc = parser.parseFromString(dataResponse, "text/xml");
+      const card = xmlDoc.querySelector('GetRandomCardResponse Card');
+  
+      if (card) {
+        const titleElement = card.querySelector('Title');
+        const contentElement = card.querySelector('Content');
+        const typeElement = card.querySelector('Type Name');
+  
+        setTitle(titleElement.textContent);
+        setContent(contentElement.textContent);
+        setTypeCard(typeElement.textContent);
         setIsOpenCard(true);
       }
     } catch (error) {

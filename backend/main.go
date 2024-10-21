@@ -48,6 +48,10 @@ func main() {
 
 	// Enrutar solicitudes SOAP
 	router.HandleFunc("/soap", handler.SoapHandler)
+	router.HandleFunc("/service.wsdl", func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "text/xml")
+		http.ServeFile(w, r, "./service.wsdl")
+	})
 
 	// Configurar CORS
 	corsHandler := cors.New(cors.Options{

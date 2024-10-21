@@ -35,21 +35,21 @@ func (handler *Handler) SoapHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Printf("Decoded envelope: %+v\n", envelope)
 
 	// Enrutar a la operación correspondiente según la solicitud recibida
-	if envelope.Body.CreateUserRequest != nil {
-		handler.HandleCreateUser(w, r, *envelope.Body.CreateUserRequest)
+	if envelope.Body.CreateUser != nil {
+		handler.HandleCreateUser(w, r, *envelope.Body.CreateUser)
 	} else if envelope.Body.GetUserRequest != nil {
 		handler.HandleGetUser(w, r, *envelope.Body.GetUserRequest)
 	} else if envelope.Body.CreateCardRequest != nil {
 		handler.HandlePostCard(w, r, *envelope.Body.CreateCardRequest)
-	} else if envelope.Body.GetRandomCardRequest != nil {
-		handler.HandleGetRandomCard(w, r, *envelope.Body.GetRandomCardRequest)
+	} else if envelope.Body.GetRandomCard != nil {
+		handler.HandleGetRandomCard(w, r, *envelope.Body.GetRandomCard)
 	} else {
 		http.Error(w, "Operación no soportada", http.StatusNotImplemented)
 	}
 }
 
 // HandleCreateUser maneja la creación de un nuevo usuario.
-func (handler *Handler) HandleCreateUser(w http.ResponseWriter, r *http.Request, req domain.CreateUserRequest) {
+func (handler *Handler) HandleCreateUser(w http.ResponseWriter, r *http.Request, req domain.CreateUser) {
 	user := req.User
 	err := handler._services.PostUser(user)
 	success := err == nil
@@ -113,7 +113,7 @@ func (handler *Handler) HandlePostCard(w http.ResponseWriter, r *http.Request, r
 }
 
 // HandleGetRandomCard maneja la obtención de una tarjeta aleatoria para un usuario específico.
-func (handler *Handler) HandleGetRandomCard(w http.ResponseWriter, r *http.Request, req domain.GetRandomCardRequest) {
+func (handler *Handler) HandleGetRandomCard(w http.ResponseWriter, r *http.Request, req domain.GetRandomCard) {
 	userID := req.UserID
 	card, err := handler._services.GetRandomCard(fmt.Sprintf("%d", userID))
 	if err != nil {

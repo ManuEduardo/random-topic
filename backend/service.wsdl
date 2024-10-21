@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+             xmlns:tns="http://localhost:8080/soap"
+             xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+             xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+             name="RandomTopicService"
+             targetNamespace="http://localhost:8080/soap"
+             xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/"
+             xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/"
+             xmlns:wsoap="http://schemas.xmlsoap.org/wsdl/soap/">
+  
+  <types>
+    <xsd:schema targetNamespace="http://localhost:8080/soap">
+      <xsd:element name="GetUserRequest">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="UserID" type="xsd:int"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+
+      <xsd:element name="GetUserResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="User" type="UserType"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+
+      <xsd:element name="CreateUser">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="User" type="UserType"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+
+      <xsd:element name="CreateUserResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="Success" type="xsd:boolean"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+
+      <xsd:element name="CreateCardRequest">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="Card" type="CardType"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+
+      <xsd:element name="CreateCardResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="Success" type="xsd:boolean"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+
+      <xsd:element name="GetRandomCard">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="UserID" type="xsd:int"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+
+      <xsd:element name="GetRandomCardResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="Card" type="CardType"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      
+      <xsd:complexType name="UserType">
+        <xsd:sequence>
+          <xsd:element name="ID" type="xsd:int"/>
+          <xsd:element name="Name" type="xsd:string"/>
+          <xsd:element name="Password" type="xsd:string"/>
+          <xsd:element name="BirthDate" type="xsd:string"/>
+          <xsd:element name="Gender" type="xsd:string"/>
+        </xsd:sequence>
+      </xsd:complexType>
+
+      <xsd:complexType name="CardType">
+        <xsd:sequence>
+          <xsd:element name="ID" type="xsd:int"/>
+          <xsd:element name="Title" type="xsd:string"/>
+          <xsd:element name="Content" type="xsd:string"/>
+          <xsd:element name="IsDefault" type="xsd:boolean"/>
+          <xsd:element name="UserID" type="xsd:int"/>
+          <xsd:element name="TypeID" type="xsd:int"/>
+        </xsd:sequence>
+      </xsd:complexType>
+    </xsd:schema>
+  </types>
+
+  <message name="GetUserRequestMessage">
+    <part name="parameters" element="tns:GetUserRequest"/>
+  </message>
+  <message name="GetUserResponseMessage">
+    <part name="parameters" element="tns:GetUserResponse"/>
+  </message>
+
+  <message name="CreateUserMessage">
+    <part name="parameters" element="tns:CreateUser"/>
+  </message>
+  <message name="CreateUserResponseMessage">
+    <part name="parameters" element="tns:CreateUserResponse"/>
+  </message>
+
+  <message name="CreateCardRequestMessage">
+    <part name="parameters" element="tns:CreateCardRequest"/>
+  </message>
+  <message name="CreateCardResponseMessage">
+    <part name="parameters" element="tns:CreateCardResponse"/>
+  </message>
+
+  <message name="GetRandomCardRequestMessage">
+    <part name="parameters" element="tns:GetRandomCard"/>
+  </message>
+  <message name="GetRandomCardResponseMessage">
+    <part name="parameters" element="tns:GetRandomCardResponse"/>
+  </message>
+
+  <portType name="RandomTopicPortType">
+    <operation name="GetUser">
+      <input message="tns:GetUserRequestMessage"/>
+      <output message="tns:GetUserResponseMessage"/>
+    </operation>
+    <operation name="CreateUser">
+      <input message="tns:CreateUserMessage"/>
+      <output message="tns:CreateUserResponseMessage"/>
+    </operation>
+    <operation name="CreateCard">
+      <input message="tns:CreateCardRequestMessage"/>
+      <output message="tns:CreateCardResponseMessage"/>
+    </operation>
+    <operation name="GetRandomCard">
+      <input message="tns:GetRandomCardRequestMessage"/>
+      <output message="tns:GetRandomCardResponseMessage"/>
+    </operation>
+  </portType>
+
+  <binding name="RandomTopicBinding" type="tns:RandomTopicPortType">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    
+    <operation name="GetUser">
+      <soap:operation soapAction="http://localhost:8080/soap/GetUser"/>
+      <input>
+        <soap:body use="literal"/>
+      </input>
+      <output>
+        <soap:body use="literal"/>
+      </output>
+    </operation>
+    
+    <operation name="CreateUser">
+      <soap:operation soapAction="http://localhost:8080/soap/CreateUser"/>
+      <input>
+        <soap:body use="literal"/>
+      </input>
+      <output>
+        <soap:body use="literal"/>
+      </output>
+    </operation>
+
+    <operation name="CreateCard">
+      <soap:operation soapAction="http://localhost:8080/soap/CreateCard"/>
+      <input>
+        <soap:body use="literal"/>
+      </input>
+      <output>
+        <soap:body use="literal"/>
+      </output>
+    </operation>
+
+    <operation name="GetRandomCard">
+      <soap:operation soapAction="http://localhost:8080/soap/GetRandomCard"/>
+      <input>
+        <soap:body use="literal"/>
+      </input>
+      <output>
+        <soap:body use="literal"/>
+      </output>
+    </operation>
+  </binding>
+
+  <service name="RandomTopicService">
+    <port name="RandomTopicPort" binding="tns:RandomTopicBinding">
+      <soap:address location="http://localhost:8080/soap"/>
+    </port>
+  </service>
+</definitions>
